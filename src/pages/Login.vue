@@ -16,6 +16,15 @@
 </template>
 
 <script>
+
+let domain
+
+if (window.location.port === "8080") {
+  domain = "http://localhost:8000"
+} else {
+  domain = window.location
+}
+
 export default {
 	data () {
 		return {
@@ -34,6 +43,11 @@ export default {
   created () {
     this.$http.get("/login/authenticated").then((res) => {
             if (res.status === 200) {
+
+              this.$store.commit('bliss/setKey', {
+                authenticated: true
+              })
+
                 this.$router.push("/new=blog")
             }
         }).catch((err) => {

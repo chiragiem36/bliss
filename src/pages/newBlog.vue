@@ -2,7 +2,7 @@
   <div class="row justify-center" style="padding-top: 20px" :style="{height: height + 'px'}">
     <div class="col-xs-10">
     	<div class="row justify-center">
-    		<span class="col-xs-10 col-sm-10">
+    		<span class="col-xs-10 col-sm-10" style="margin-top: 20px">
                 <q-field>
                     <q-input float-label="Title" placeholder="Title for your shit" v-model="values.title" />
                 </q-field>
@@ -10,30 +10,30 @@
     				<q-input type="file" ref="image" />
     			</q-field> -->
     		</span>
-            <span class="col-xs-10 col-sm-10">
+            <span class="col-xs-10 col-sm-10" style="margin-top: 20px">
                 <q-field>
                     <q-input float-label="Description" placeholder="Title for your shit" v-model="values.desc" />
                 </q-field>
             </span>
             <span class="col-xs-4">
-                <q-field style="margin-top: 10px">
+                <q-field style="margin-top: 20px">
                     <q-input float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.img_url" />
                 </q-field>
             </span>
             <span class="col-xs-4 offset-xs-1">
-                <q-field style="margin-top: 10px">
+                <q-field style="margin-top: 20px">
                     <q-input float-label="Author name" placeholder="Tera naam bata BTC" v-model="values.author" />
                 </q-field>
             </span>
     	</div>
-    	<div class="row justify-center">
+    	<div class="row justify-center" style="margin-top: 20px">
     		<span class="col-xs-10 col-sm-10">
     			<q-field style="margin-top: 20px">
     				<q-input float-label="Content" placeholder="Here goes your Shit" type="textarea" :rows="rows" v-model="values.content" />
     			</q-field>
     		</span>
-    		<span class="col-xs-10 col-sm-10" style="padding-top: 10px">
-    			<q-btn @click="add" label="Submit your shit" color="primary" />
+    		<span class="col-xs-10 col-sm-10" style="margin-top: 20px">
+    			<q-btn @click.native="add" label="Submit your shit" color="primary" />
     		</span>
     	</div>
     </div>
@@ -41,11 +41,19 @@
 </template>
 
 <script>
+
+let domain
+
+if (window.location.port === "8080") {
+  domain = "http://localhost:8000"
+} else {
+  domain = window.location
+}
+
 export default {
 	data () {
 		return {
 			values: {
-                _id: Date.now(),
                 title: '',
                 desc: '',
                 img_url: '',
@@ -56,7 +64,7 @@ export default {
 	},
 	computed: {
 		height () {
-			return window.innerHeight
+			return window.innerHeight - 150 + 'px'
 		},
 		rows () {
 			if (this.$q.platform.is.mobile) {
@@ -96,6 +104,9 @@ export default {
 
             const o = this.values
             o.time = new Date()
+            o._id = Date.now()
+
+            console.log(o)
 
             this.$http.post("/blogs/new", o).then((res) => {
                 if (res.status === 200) {
