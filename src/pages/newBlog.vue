@@ -28,22 +28,22 @@
             <span class="col-xs-10 col-sm-10" style="margin-top: 20px">
                 <q-toggle v-model="values.video" checked-icon="video_library" unchecked-icon="add_photo_alternate" color="blue" val="true" label="Video"></q-toggle>
             </span>
-            <span class="col-xs-4">
+            <span :disabled="!video" class="col-xs-4">
                 <q-field style="margin-top: 20px">
-                    <q-input :disabled="!video" float-label="Video Url" placeholder="Link to your cock sucking video" v-model="values.url" />
+                    <q-input float-label="Video Url" placeholder="Link to your cock sucking video" v-model="values.url" />
                 </q-field>
             </span>
-            <span class="col-xs-4 offset-xs-2">
+            <span v-if="!video" class="col-xs-4 offset-xs-2">
                 <q-field style="margin-top: 20px">
-                    <q-input :disabled="!video" float-label="Video id" placeholder="Id of youtube video" v-model="values.vid" />
+                    <q-input float-label="Video id" placeholder="Id of youtube video" v-model="values.vid" />
                 </q-field>
             </span>
-            <span class="col-xs-4">
+            <span v-if="video" class="col-xs-4">
                 <q-field style="margin-top: 20px">
-                    <q-input :disabled="video" float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.url" />
+                    <q-input float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.url" />
                 </q-field>
             </span>
-            <span class="col-xs-4 offset-xs-2">
+            <span v-if="video" class="col-xs-4 offset-xs-2">
                 <q-field style="margin-top: 20px">
                     <q-input float-label="Thumbnail Url" placeholder="Link to your shitty blog image thumbnail" v-model="values.thumb" />
                 </q-field>
