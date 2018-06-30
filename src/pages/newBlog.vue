@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center" style="padding-top: 20px" :style="{height: height + 'px'}">
+  <div class="row justify-center" style="padding-top: 20px; height: 95%; overflow-y: auto">
     <div class="col-xs-10">
     	<div class="row justify-center">
     		<span class="col-xs-10 col-sm-10" style="margin-top: 20px">
@@ -15,12 +15,22 @@
                     <q-input float-label="Description" placeholder="Title for your shit" v-model="values.desc" />
                 </q-field>
             </span>
+            <span class="col-xs-10 col-sm-10" style="margin-top: 20px">
+                <q-field>
+                    <q-input float-label="Tags" placeholder="tags to filter blogs" v-model="values.tags" />
+                </q-field>
+            </span>
             <span class="col-xs-4">
                 <q-field style="margin-top: 20px">
                     <q-input float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.img_url" />
                 </q-field>
             </span>
-            <span class="col-xs-4 offset-xs-1">
+            <span class="col-xs-4 offset-xs-2">
+                <q-field style="margin-top: 20px">
+                    <q-input float-label="Thumbnail Url" placeholder="Link to your shitty blog image thumbnail" v-model="values.thumb" />
+                </q-field>
+            </span>
+            <span class="col-xs-4">
                 <q-field style="margin-top: 20px">
                     <q-input float-label="Author name" placeholder="Tera naam bata BTC" v-model="values.author" />
                 </q-field>
@@ -32,7 +42,7 @@
     				<q-input float-label="Content" placeholder="Here goes your Shit" type="textarea" :rows="rows" v-model="values.content" />
     			</q-field>
     		</span>
-    		<span class="col-xs-10 col-sm-10" style="margin-top: 20px">
+    		<span class="col-xs-10 col-sm-10" style="padding-top: 20px; padding-bottom: 20px">
     			<q-btn @click.native="add" label="Submit your shit" color="primary" />
     		</span>
     	</div>
@@ -57,14 +67,16 @@ export default {
                 title: '',
                 desc: '',
                 img_url: '',
+                thumb: '',
                 content: '',
-                author: ''
+                author: '',
+                tags: ''
             }
 		}
 	},
 	computed: {
 		height () {
-			return window.innerHeight - 150 + 'px'
+			return window.innerHeight
 		},
 		rows () {
 			if (this.$q.platform.is.mobile) {
@@ -106,6 +118,10 @@ export default {
             o.time = new Date()
             o._id = Date.now()
 
+            o.tags.replace(" ", "")
+
+            o.tags = o.tags.split(",")
+
             console.log(o)
 
             this.$http.post("/blogs/new", o).then((res) => {
@@ -129,6 +145,7 @@ export default {
 
 	* {
 		font-size: 12px;
+    white-space: pre-wrap;
 	}
 
 </style>

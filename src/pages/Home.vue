@@ -1,24 +1,13 @@
 <template>
-  <div >
-        <q-scroll-area style="padding-top: 10px" :style="{'height': height - 150 + 'px'}" class="row">
-        	<div class="col-xs-10">
-        		<div v-for="blog in blogs" class="row justify-center" style="padding-bottom: 5px">
-        			<q-card :key="blog.title" color="white" text-color="grey-9" class="col-xs-11  col-sm-8 col-md-6" style="margin-bottom: 10px">
-        				<q-card-title class="text-grey-8">
-        					{{ blog.title }}
-        					<span slot="subtitle" class="text-grey-8">Time - <span class="text-grey-6">{{ new Date(blog.date).toLocaleTimeString() }}</span></span>
-        				</q-card-title>
-        				<q-card-separator />
-        				<q-card-main>
-        					<p style="overflow: hidden" :style="{'height': maxW}">
-        						<img src="/assets/sample.png" width="100%" />
-        					</p>
-        					<p>{{ blog.desc }}</p>
-        				</q-card-main>
-        			</q-card>
-        		</div>
-        	</div>
-        </q-scroll-area>
+  <div class="row items-center justify-center" style="padding-top: 5px; padding-bottom: 5px">
+    <div v-if="filteredBlogs.length > 0" class="col-xs-11 col-sm-9 col-md-7 col-lg-7">
+      <blog-item @click="toBlog(blog._id)" :blog="blog" :key="blog._id" v-for="(blog, i) in filteredBlogs" :style="{'marginTop': i === 0 ? '0px' : '20px' }"></blog-item>
+    </div>
+    <div v-else class="col-xs-11 col-sm-9 col-md-7 col-lg-7 self-center text-center text-grey-6" style="font-weight: 400; font-size: 14px">
+      <div class="row items-center justify-center" :style="{height: height - 120 + 'px'}">
+        Sorry .... nothing in here. <br>Please try again later
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,7 +21,23 @@ if (window.location.port === "8080") {
   domain = window.location.origin
 }
 
+import BlogItem from '../components/BlogItem'
+
 export default {
+  components: {
+    'blog-item': BlogItem
+  },
+  watch: {
+    "$route.path" () {
+
+      if (this.$route.path.indexOf('/tags/') === 0) {
+        this.getByTag(this.$route.params.tag)
+      } else {
+        this.getLatest()
+      }
+
+    }
+  },
 	data () {
 		return {
       blogs: [],
@@ -40,22 +45,45 @@ export default {
 		}
 	},
   created () {
-    this.$http.get(domain + '/blogs/latest').then((res) => {
-      console.log(res)
-      if (res.status === 200 ) {
-        this.blogs.push(res.body)
-      }
-      return res.body._id
-    }).then((id) => {
-      this.getMore(id)
-    })
+
+    if (this.$route.path.indexOf('/tags/') === 0) {
+      this.getByTag(this.$route.params.tag)
+    } else {
+      this.getLatest()
+    }
   },
   methods: {
+    toBlog (n) {
+      this.$router.push('/blog/' + n)
+    },
+    getLatest () {
+      this.blogs = []
+      this.$http.get(domain + '/blogs/latest').then((res) => {
+        console.log(res)
+        if (res.status === 200 ) {
+          this.blogs.push(res.body)
+        }
+        return res.body._id
+      }).then((id) => {
+        this.getMore(id)
+      })
+    },
     getMore (ts) {
       this.$http.get(domain + '/blogs/last=' + ts).then((res) => {
         if (res.status === 200) {
           this.blogs.push(res.body)
           this.getMore(res.body._id)
+        }
+      }).catch((err) => {
+        console.error(err)
+      })
+    },
+    getByTag (tag) {
+      this.blogs = []
+      this.$http.get(domain + '/blogs/tag=' + tag).then((res) => {
+        if (res.status === 200) {
+          this.blogs = []
+          this.blogs.push(res.body)
         }
       }).catch((err) => {
         console.error(err)
@@ -66,34 +94,8 @@ export default {
 		height () {
 			return window.innerHeight
 		},
-		blogs () {
-			return [
-				{
-					title: 'Hello world',
-					desc: 'Saying Hello to the world',
-					tags: 'none',
-					date: new Date()
-				},
-				{
-					title: 'Hello world',
-					desc: 'Saying Hello to the world',
-					tags: 'none',
-					date: new Date()
-				},
-				{
-					title: 'Hello world',
-					desc: 'Saying Hello to the world',
-					tags: 'none',
-					date: new Date()
-				}
-			]
-		},
-		maxW () {
-			if (this.$q.platform.is.mobile) {
-				return '150px'
-			} else {
-				return '350px'
-			}
+		filteredBlogs () {
+			return this.blogs
 		}
 	}
   // name: 'PageName',

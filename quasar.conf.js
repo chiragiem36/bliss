@@ -4,17 +4,17 @@ module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
     plugins: [
-    'Main'
+    'Main', 'addressbar-color'
     ],
     css: [
       'app.styl'
     ],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons' // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
       // 'ionicons',
       // 'mdi',
-      // 'fontawesome'
+      'fontawesome'
     ],
     supportIE: false,
     build: {
@@ -37,6 +37,7 @@ module.exports = function (ctx) {
     },
     // framework: 'all' --- includes everything; for dev only!
     framework: {
+      iconSet: 'fontawesome',
       components: [
         'QLayout',
         'QLayoutHeader',
@@ -57,18 +58,21 @@ module.exports = function (ctx) {
         'QScrollArea',
         'QInput',
         'QCard',
+        'QCardMedia',
         'QCardTitle',
         'QCardMain',
         'QTab',
         'QTabs',
-        'QRouteTab'
+        'QRouteTab',
+        'QModal',
+        "QScrollObservable"
       ],
       directives: [
         'Ripple'
       ],
       // Quasar plugins
       plugins: [
-        'Notify', 'Platform', "Loading"
+        'Notify', 'Platform', "Loading", "AddressbarColor", "AppFullscreen"
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
