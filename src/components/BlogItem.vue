@@ -1,6 +1,6 @@
 <template>
-  <q-card-media @click.native="toBlog(blog._id)" color="pink" style="border-radius: 3px; cursor: pointer" overlay-position="bottom">
-    <img :src="blog.img_url" style="max-height: 450px">
+  <q-card-media v-if="blog" @click.native="toBlog(blog._id)" color="pink" style="border-radius: 3px; cursor: pointer" overlay-position="bottom">
+    <img :src="blog.video === true ? 'https://img.youtube.com/vi/' + blog.vid + '/0.jpg' : blog.url" style="max-height: 450px">
 
     <!-- Notice the slot="overlay" -->
     <q-card-title slot="overlay" style="padding-top: 20px; padding-bottom: 20px">

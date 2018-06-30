@@ -15,24 +15,37 @@
                     <q-input float-label="Description" placeholder="Title for your shit" v-model="values.desc" />
                 </q-field>
             </span>
-            <span class="col-xs-10 col-sm-10" style="margin-top: 20px">
+            <span class="col-xs-10 col-sm-4 offset-sm-1" style="margin-top: 20px">
                 <q-field>
                     <q-input float-label="Tags" placeholder="tags to filter blogs" v-model="values.tags" />
                 </q-field>
             </span>
+            <span class="col-xs-10 col-sm-4 offset-sm-1">
+                <q-field style="margin-top: 20px">
+                    <q-input float-label="Author name" placeholder="Tera naam bata BTC" v-model="values.author" />
+                </q-field>
+            </span>
+            <span class="col-xs-10 col-sm-10" style="margin-top: 20px">
+                <q-toggle v-model="values.video" checked-icon="video_library" unchecked-icon="add_photo_alternate" color="blue" val="true" label="Video"></q-toggle>
+            </span>
             <span class="col-xs-4">
                 <q-field style="margin-top: 20px">
-                    <q-input float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.img_url" />
+                    <q-input :disabled="!video" float-label="Video Url" placeholder="Link to your cock sucking video" v-model="values.url" />
+                </q-field>
+            </span>
+            <span class="col-xs-4 offset-xs-2">
+                <q-field style="margin-top: 20px">
+                    <q-input :disabled="!video" float-label="Video id" placeholder="Id of youtube video" v-model="values.vid" />
+                </q-field>
+            </span>
+            <span class="col-xs-4">
+                <q-field style="margin-top: 20px">
+                    <q-input :disabled="video" float-label="Image Url" placeholder="Link to your shitty blog image" v-model="values.url" />
                 </q-field>
             </span>
             <span class="col-xs-4 offset-xs-2">
                 <q-field style="margin-top: 20px">
                     <q-input float-label="Thumbnail Url" placeholder="Link to your shitty blog image thumbnail" v-model="values.thumb" />
-                </q-field>
-            </span>
-            <span class="col-xs-4">
-                <q-field style="margin-top: 20px">
-                    <q-input float-label="Author name" placeholder="Tera naam bata BTC" v-model="values.author" />
                 </q-field>
             </span>
     	</div>
@@ -65,13 +78,23 @@ export default {
 		return {
 			values: {
                 title: '',
+                video: false,
                 desc: '',
-                img_url: '',
+                url: '',
+                vid: '',
                 thumb: '',
                 content: '',
                 author: '',
                 tags: ''
-            }
+            },
+            check: {
+                      title: '',
+                      desc: '',
+                      url: '',
+                      content: '',
+                      author: '',
+                      tags: ''
+                  }
 		}
 	},
 	computed: {
@@ -100,7 +123,7 @@ export default {
     methods: {
         add () {
 
-            const isValid = Object.keys(this.values).every((k) => {
+            const isValid = Object.keys(this.check).every((k) => {
                 if (this.values[k].length > 3) {
                     return true
                 } else {

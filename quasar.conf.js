@@ -60,12 +60,13 @@ module.exports = function (ctx) {
         'QCard',
         'QCardMedia',
         'QCardTitle',
-        'QCardMain',
+        'QVideo',
         'QTab',
         'QTabs',
         'QRouteTab',
         'QModal',
-        "QScrollObservable"
+        "QScrollObservable",
+        "QToggle"
       ],
       directives: [
         'Ripple'

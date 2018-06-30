@@ -1,7 +1,7 @@
 <template>
   <div class="row items-center justify-center" style="padding-top: 5px; padding-bottom: 5px">
     <div v-if="filteredBlogs.length > 0" class="col-xs-11 col-sm-9 col-md-7 col-lg-7">
-      <blog-item @click="toBlog(blog._id)" :blog="blog" :key="blog._id" v-for="(blog, i) in filteredBlogs" :style="{'marginTop': i === 0 ? '0px' : '20px' }"></blog-item>
+      <blog-item v-if="blog" @click="toBlog(blog._id)" :blog="blog" :key="blog._id" v-for="(blog, i) in filteredBlogs" :style="{'marginTop': i === 0 ? '0px' : '20px' }"></blog-item>
     </div>
     <div v-else class="col-xs-11 col-sm-9 col-md-7 col-lg-7 self-center text-center text-grey-6" style="font-weight: 400; font-size: 14px">
       <div class="row items-center justify-center" :style="{height: height - 120 + 'px'}">
